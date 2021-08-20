@@ -74,7 +74,6 @@ The purpose of this code base is to add a specified signal-to-noise ratio noise 
 1. **mix_cleanaudio_with_rir_offline.py**: Generate far-field speech offline
 
    - two parameters are needed: 
-
      - **--data_root**: the data path which you want to download and store the RIR dataset in.
      - **--clean_data_list_path:** the path of the folder in which  **'training_list.txt', 'validation_list.txt', 'testing_list.txt'** are stored in
 
