@@ -6,9 +6,9 @@ The purpose of this code base is to add a specified signal-to-noise ratio noise 
 
   The database is being built with respect to collect a large number of various Room Impulse Responses, Room environmental noises (or "silences"), Retransmitted speech (for ASR and SID testing), and meta-data (positions of microphones, speakers etc.).
 
-  ​	The goal is to provide speech community with a dataset for data enhancement and distant microphone or microphone array experiments in ASR and SID.
+  The goal is to provide speech community with a dataset for data enhancement and distant microphone or microphone array experiments in ASR and SID.
 
-  ​	In this codebase, we only use the RIR data, which is used to synthesize far-field speech, the composition of the RIR dataset and citation details are as follows.
+  In this codebase, we only use the RIR data, which is used to synthesize far-field speech, the composition of the RIR dataset and citation details are as follows.
 
   | Room Name |    Room Type    | Size (length, depth, height) (m) | (microphone_num x   loudspeaker_num) |
   | :-------: | :-------------: | :------------------------------: | :----------------------------------: |
