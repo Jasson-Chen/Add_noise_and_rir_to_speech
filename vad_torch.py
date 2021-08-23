@@ -155,7 +155,7 @@ class VoiceActivityDetector():
             energy_freq = self._calculate_normalized_energy(data_window)
             sum_voice_energy = self._sum_energy_in_band(energy_freq, start_band, end_band)
             sum_full_energy = sum(energy_freq.values())
-            speech_ratio = sum_voice_energy/sum_full_energy
+            speech_ratio = sum_voice_energy/(sum_full_energy + 1e-12)
             # Hipothesis is that when there is a speech sequence we have ratio of energies more than Threshold
             speech_ratio = speech_ratio>self.speech_energy_threshold
             detected_windows = np.append(detected_windows,[sample_start, speech_ratio])
