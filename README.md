@@ -24,14 +24,14 @@ The purpose of this code base is to add a specified signal-to-noise ratio noise 
 
   ```
   @ARTICLE{8717722,
-  author={Szöke, Igor and Skácel, Miroslav and Mošner, Ladislav and Paliesek, Jakub and Černocký, Jan},
-  journal={IEEE Journal of Selected Topics in Signal Processing}, 
-  title={Building and evaluation of a real room impulse response dataset}, 
-  year={2019},
-  volume={13},
-  number={4},
-  pages={863-876},
-  doi={10.1109/JSTSP.2019.2917582}
+      author={Szöke, Igor and Skácel, Miroslav and Mošner, Ladislav and Paliesek, Jakub and Černocký, Jan},
+      journal={IEEE Journal of Selected Topics in Signal Processing}, 
+      title={Building and evaluation of a real room impulse response dataset}, 
+      year={2019},
+      volume={13},
+      number={4},
+      pages={863-876},
+      doi={10.1109/JSTSP.2019.2917582}
    }
   ```
 
