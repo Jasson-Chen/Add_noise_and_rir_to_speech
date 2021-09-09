@@ -28,6 +28,7 @@ import soundfile as sf
 import shutil
 import random
 from scipy import signal
+from augmentation import add_rir
 
 def __maybe_download_file(destination: str, source: str):
     """
@@ -62,6 +63,7 @@ def extract_file(filepath: str, data_dir: str):
         tar.close()
     except Exception:
         logging.info('Not extracting. Maybe already there?')
+
 def move_rir_file(destination: str, source: str):
 
     ReverDB_root = source
@@ -87,7 +89,6 @@ def move_rir_file(destination: str, source: str):
                 rir_wav_path = selected_rir_path + os.listdir(selected_rir_path)[0]
                 shutil.copyfile(rir_wav_path, destination + str(step) + '.wav')
                 step = step + 1
-
 
 def main():
     parser = argparse.ArgumentParser(description='Google Speech Command Data download')
@@ -117,8 +118,6 @@ def main():
     if not os.path.exists(rir_data_mix_folder):
         os.mkdir(rir_data_mix_folder)
         move_rir_file(rir_data_mix_folder, rir_data_folder)
-
-        
         
     # Generate far-field wav offline
     print('Generating far-field dataset, Maybe lasting several hours')
@@ -128,24 +127,16 @@ def main():
     random.seed(2000)
         
     for split in ['testing', 'validation', 'training']:
-        with open(os.path.join(list_path, split+'_list.txt'), 'r') as f:
+        with open(os.path.join(list_path, split + '_list.txt'), 'r') as f:
             filelist = f.readlines()
+
         for file in filelist:
             file_path = file.strip()
             
             if random.random() < 0.5:
-                sig, sr = sf.read(file_path)
-                seed = random.randint(1, 1674)
-                rir_wav_path = rir_data_mix_folder + str(seed) + '.wav'
-                rir, sr_rir = sf.read(rir_wav_path)
-
-                h = np.array(rir)
-                reverb_sig = signal.lfilter(h, 1, sig)
-                sf.write(file_path, reverb_sig, sr)
-                                
+                add_rir(rir_data_mix_folder, file_path, dest_file=True)
     
     logging.info('Done!')
-
 
 if __name__ == "__main__":
     main()
