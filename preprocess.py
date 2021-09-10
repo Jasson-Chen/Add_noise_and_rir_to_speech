@@ -2,7 +2,7 @@ if __name__ == "__main__":
     import os, shutil
     import argparse
     from glob import glob
-    from augmentation import mix_codecs
+    from augmentation import augment
 
     parser = argparse.ArgumentParser()
     parser.add_argument("src", help="source wave files")
@@ -11,25 +11,30 @@ if __name__ == "__main__":
     parser.add_argument("-v", "--verbose", default=False, action="store_true", help="show debug info", required=False)
     args = parser.parse_args()
 
+    reverdb_dir = "reverdb"
     distortion_config = "distortion_codecs.conf"
-    scheme = [.2, .2, .2, 1., 1]
+    scheme = [False, .2, .2, .2, 1., 1]
     if os.path.exists(args.config):
         with open(args.config, "r") as f:
             lines = f.readlines()
             for line in lines:
                 [key, value] = line.strip().split("=")
+                if key == "ADD_REVERB":
+                    scheme[0] = bool(value) if value == "True" or value == "False" or len(value) == 0 else value
                 if key == "MINOR_DISTORTION_PERCENTAGE":
-                    scheme[0] = float(value)
-                elif key == "MEDIUM_DISTORTION_PERCENTAGE":
                     scheme[1] = float(value)
-                elif key == "HIGH_DISTORTION_PERCENTAGE":
+                elif key == "MEDIUM_DISTORTION_PERCENTAGE":
                     scheme[2] = float(value)
-                elif key == "SPEED_PERTURBATION":
+                elif key == "HIGH_DISTORTION_PERCENTAGE":
                     scheme[3] = float(value)
-                elif key == "MIXED_CODECS_PER_CATEGORY":
+                elif key == "SPEED_PERTURBATION":
                     scheme[4] = float(value)
+                elif key == "MIXED_CODECS_PER_CATEGORY":
+                    scheme[5] = float(value)
                 elif key == "DISTORTION_CONFIG_FILE":
                     distortion_config = value
+                elif key == "REVERDB_DIR":
+                    reverdb_dir = value
     else:
         parser.print_help()
         exit(1)
@@ -59,7 +64,9 @@ if __name__ == "__main__":
     #meta_dest = os.path.join("/media/m/F439-FA9D/", "workshop", "callhome", "callhome_data", "data", "adapt")
     
     dest = os.path.join(dest, scheme_dir, "wav")
-    sets = mix_codecs(glob(os.path.join(src, "*.wav")), dest, distortion_config, scheme=scheme, verbose=args.verbose)
+    if not os.path.exists(dest):
+        os.makedirs(dest)
+    sets = augment(glob(os.path.join(src, "*.wav")), dest, distortion_config, scheme=scheme, reverdb_dir=reverdb_dir, verbose=args.verbose)
 
     with open(f"make_distorted_wavs.sh", "w+") as f:
         f.write("#!/bin/bash -x\n")
