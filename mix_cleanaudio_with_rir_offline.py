@@ -74,23 +74,20 @@ def move_rir_file(destination: str, source: str):
     step = 1
     for i in range(9):
         print("Moving", Room_name[i])
-        speaker_name = os.listdir(os.path.join(ReverDB_root, Room_name[i], 'MicID01'))
+        speaker_name = os.listdir(ReverDB_root + Room_name[i] + '/MicID01')
 
         for j in range(len(speaker_name)):
             position_name = []
-            for lists in os.listdir(os.path.join(ReverDB_root, Room_name[i], 'MicID01', speaker_name[j])):
-                sub_path = os.path.join(ReverDB_root, Room_name[i], 'MicID01', speaker_name[j], lists)
+            for lists in os.listdir(ReverDB_root + Room_name[i] + '/MicID01/' + speaker_name[j]):
+                sub_path = os.path.join(ReverDB_root + Room_name[i] + '/MicID01/' + speaker_name[j], lists)
 
                 if os.path.isdir(sub_path):
                     position_name.append(sub_path)
 
             for k in range(len(position_name)):
-                selected_rir_path = os.path.join(position_name[k], 'RIR')
-                rir_wav_path = os.path.join(selected_rir_path, os.listdir(selected_rir_path)[0])
-                basis = rir_wav_path[len(source):].replace("/", "_").replace("\\", "_").split(".")[0]
-                dest_path = os.path.join(destination, str(step) + "_" + basis + '.wav')
-                print(f"Copy from {rir_wav_path} to {dest_path}")
-                shutil.copyfile(rir_wav_path, dest_path)
+                selected_rir_path = position_name[k] + '/RIR/'
+                rir_wav_path = selected_rir_path + os.listdir(selected_rir_path)[0]
+                shutil.copyfile(rir_wav_path, destination + str(step) + '.wav')
                 step = step + 1
 
 def main():
